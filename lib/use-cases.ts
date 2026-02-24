@@ -1,4 +1,11 @@
-export type Category = "Inside Sales" | "Outside Sales" | "Project & Engineering";
+export type Category =
+  | "Inside Sales"
+  | "Outside Sales"
+  | "Project & Engineering"
+  | "Business Development"
+  | "Operations"
+  | "HR"
+  | "Accounting";
 
 export interface UseCase {
   id: string;
@@ -209,4 +216,12 @@ export const USE_CASES: UseCase[] = [
   },
 ];
 
-export const CATEGORIES: Category[] = ["Inside Sales", "Outside Sales", "Project & Engineering"];
+export const CATEGORIES: Category[] = [
+  "Inside Sales",
+  "Outside Sales",
+  "Project & Engineering",
+  "Business Development",
+  "Operations",
+  "HR",
+  "Accounting",
+];

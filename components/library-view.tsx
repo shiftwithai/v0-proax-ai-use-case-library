@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useMemo, useRef } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import { LayoutGrid, List, ChevronLeft, ChevronRight } from "lucide-react";
-import { USE_CASES, CATEGORIES, type UseCase, type Category } from "@/lib/use-cases";
+import { getAllUseCases, getAllCategories, type UseCase, type Category } from "@/lib/use-cases-store";
 import { FilterSidebar } from "@/components/filter-sidebar";
 import { UseCaseCard } from "@/components/use-case-card";
 import { UseCasePanel } from "@/components/use-case-panel";
@@ -12,12 +12,19 @@ export function LibraryView() {
   const [gridView, setGridView] = useState(true);
   const [activeCase, setActiveCase] = useState<UseCase | null>(null);
   const pillsRef = useRef<HTMLDivElement>(null);
+  const [allCases, setAllCases] = useState<UseCase[]>([]);
+  const [allCategories, setAllCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    setAllCases(getAllUseCases());
+    setAllCategories(getAllCategories());
+  }, []);
 
   const filtered = useMemo(() => {
-    return USE_CASES.filter((uc) => {
+    return allCases.filter((uc) => {
       return selectedCategories.length === 0 || selectedCategories.includes(uc.category);
     });
-  }, [selectedCategories]);
+  }, [allCases, selectedCategories]);
 
   const toggleCategory = (cat: Category) => {
     setSelectedCategories((prev) =>
@@ -73,7 +80,7 @@ export function LibraryView() {
               All
             </button>
 
-            {CATEGORIES.map((cat) => {
+            {allCategories.map((cat) => {
               const active = selectedCategories.includes(cat);
               return (
                 <button
