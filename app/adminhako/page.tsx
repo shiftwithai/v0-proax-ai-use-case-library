@@ -203,11 +203,13 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
         style={{ backgroundColor: "#012A4A" }}
       >
         <div className="flex items-center gap-4">
-          <img
-            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/ProaxLogo_white-kO8MOv3mVch1BdT7xvZ2peSTNzZmqd.png"
-            alt="Proax Technologies"
-            className="h-7 w-auto object-contain"
-          />
+          <a href="/" className="transition-opacity hover:opacity-75">
+            <img
+              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/ProaxLogo_white-kO8MOv3mVch1BdT7xvZ2peSTNzZmqd.png"
+              alt="Proax Technologies — go to homepage"
+              className="h-7 w-auto object-contain"
+            />
+          </a>
           <span className="text-sm font-medium" style={{ color: "#9BBCD6" }}>
             Use Case Admin
           </span>
