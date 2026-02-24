@@ -145,6 +145,19 @@ export function LibraryView() {
           </div>
         </div>
 
+        {/* Clear filters */}
+        {selectedCategories.length > 0 && (
+          <div className="-mt-2">
+            <button
+              onClick={() => setSelectedCategories([])}
+              className="text-sm font-medium transition-opacity hover:opacity-70"
+              style={{ color: "#376FE5" }}
+            >
+              Clear filters
+            </button>
+          </div>
+        )}
+
         {/* Results count */}
         <p className="text-sm" style={{ color: "#64748B" }}>
           {filtered.length} use case{filtered.length !== 1 ? "s" : ""}
