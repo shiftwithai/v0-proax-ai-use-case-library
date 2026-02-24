@@ -1,31 +1,34 @@
 "use client";
 
-import { useState, useMemo } from "react";
-import { Search, LayoutGrid, List } from "lucide-react";
-import { USE_CASES, type UseCase, type Category } from "@/lib/use-cases";
+import { useState, useMemo, useRef } from "react";
+import { LayoutGrid, List, ChevronLeft, ChevronRight } from "lucide-react";
+import { USE_CASES, CATEGORIES, type UseCase, type Category } from "@/lib/use-cases";
 import { FilterSidebar } from "@/components/filter-sidebar";
 import { UseCaseCard } from "@/components/use-case-card";
 import { UseCasePanel } from "@/components/use-case-panel";
 
 export function LibraryView() {
   const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
-  const [searchQuery, setSearchQuery] = useState("");
   const [gridView, setGridView] = useState(true);
   const [activeCase, setActiveCase] = useState<UseCase | null>(null);
+  const pillsRef = useRef<HTMLDivElement>(null);
 
   const filtered = useMemo(() => {
     return USE_CASES.filter((uc) => {
-      const matchesCategory =
-        selectedCategories.length === 0 || selectedCategories.includes(uc.category);
-      const q = searchQuery.toLowerCase();
-      const matchesSearch =
-        !q ||
-        uc.title.toLowerCase().includes(q) ||
-        uc.description.toLowerCase().includes(q) ||
-        uc.category.toLowerCase().includes(q);
-      return matchesCategory && matchesSearch;
+      return selectedCategories.length === 0 || selectedCategories.includes(uc.category);
     });
-  }, [selectedCategories, searchQuery]);
+  }, [selectedCategories]);
+
+  const toggleCategory = (cat: Category) => {
+    setSelectedCategories((prev) =>
+      prev.includes(cat) ? prev.filter((c) => c !== cat) : [...prev, cat]
+    );
+  };
+
+  const scrollPills = (dir: "left" | "right") => {
+    if (!pillsRef.current) return;
+    pillsRef.current.scrollBy({ left: dir === "left" ? -160 : 160, behavior: "smooth" });
+  };
 
   return (
     <div className="flex flex-1 min-h-0" style={{ backgroundColor: "#EFF3F9" }}>
@@ -36,35 +39,76 @@ export function LibraryView() {
       />
 
       {/* Main content */}
-      <main className="flex-1 flex flex-col min-w-0 px-8 py-6 gap-6">
-        {/* Toolbar */}
-        <div className="flex items-center gap-4">
-          {/* Search */}
-          <div className="flex-1 relative max-w-xl">
-            <Search
-              size={16}
-              className="absolute left-3.5 top-1/2 -translate-y-1/2"
-              style={{ color: "#9BBCD6" }}
-            />
-            <input
-              type="search"
-              placeholder="Search use cases..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl text-sm outline-none transition-colors"
+      <main className="flex-1 flex flex-col min-w-0 px-8 py-6 gap-5">
+
+        {/* Toolbar row: pill carousel + grid/list toggle */}
+        <div className="flex items-center gap-3">
+          {/* Scroll left */}
+          <button
+            onClick={() => scrollPills("left")}
+            className="shrink-0 w-7 h-7 flex items-center justify-center rounded-full transition-colors hover:bg-slate-200"
+            style={{ color: "#22577A" }}
+            aria-label="Scroll left"
+          >
+            <ChevronLeft size={16} />
+          </button>
+
+          {/* Pills strip */}
+          <div
+            ref={pillsRef}
+            className="flex items-center gap-2 overflow-x-auto flex-1"
+            style={{ scrollbarWidth: "none" }}
+          >
+            {/* "All" pill */}
+            <button
+              onClick={() => setSelectedCategories([])}
+              className="shrink-0 px-4 py-1.5 rounded-full text-sm font-medium transition-colors whitespace-nowrap"
               style={{
-                backgroundColor: "#FFFFFF",
-                border: "1px solid #D1DCE8",
-                color: "#012A4A",
+                backgroundColor: selectedCategories.length === 0 ? "#012A4A" : "#FFFFFF",
+                color: selectedCategories.length === 0 ? "#FFFFFF" : "#22577A",
+                border: "1px solid",
+                borderColor: selectedCategories.length === 0 ? "#012A4A" : "#D1DCE8",
               }}
-              onFocus={(e) => (e.currentTarget.style.borderColor = "#118AB2")}
-              onBlur={(e) => (e.currentTarget.style.borderColor = "#D1DCE8")}
-            />
+            >
+              All
+            </button>
+
+            {CATEGORIES.map((cat) => {
+              const active = selectedCategories.includes(cat);
+              return (
+                <button
+                  key={cat}
+                  onClick={() => toggleCategory(cat)}
+                  className="shrink-0 px-4 py-1.5 rounded-full text-sm font-medium transition-colors whitespace-nowrap"
+                  style={{
+                    backgroundColor: active ? "#376FE5" : "#FFFFFF",
+                    color: active ? "#FFFFFF" : "#22577A",
+                    border: "1px solid",
+                    borderColor: active ? "#376FE5" : "#D1DCE8",
+                  }}
+                >
+                  {cat}
+                </button>
+              );
+            })}
           </div>
+
+          {/* Scroll right */}
+          <button
+            onClick={() => scrollPills("right")}
+            className="shrink-0 w-7 h-7 flex items-center justify-center rounded-full transition-colors hover:bg-slate-200"
+            style={{ color: "#22577A" }}
+            aria-label="Scroll right"
+          >
+            <ChevronRight size={16} />
+          </button>
+
+          {/* Divider */}
+          <div className="w-px h-5 shrink-0" style={{ backgroundColor: "#D1DCE8" }} />
 
           {/* Grid / List toggle */}
           <div
-            className="flex items-center rounded-xl overflow-hidden"
+            className="flex items-center rounded-xl overflow-hidden shrink-0"
             style={{ border: "1px solid #D1DCE8", backgroundColor: "#FFFFFF" }}
           >
             <button
@@ -95,16 +139,14 @@ export function LibraryView() {
         </div>
 
         {/* Results count */}
-        <div className="flex items-center justify-between">
-          <p className="text-sm" style={{ color: "#64748B" }}>
-            {filtered.length} use case{filtered.length !== 1 ? "s" : ""}
-            {selectedCategories.length > 0 && (
-              <span style={{ color: "#118AB2" }}>
-                {" "}in {selectedCategories.join(", ")}
-              </span>
-            )}
-          </p>
-        </div>
+        <p className="text-sm" style={{ color: "#64748B" }}>
+          {filtered.length} use case{filtered.length !== 1 ? "s" : ""}
+          {selectedCategories.length > 0 && (
+            <span style={{ color: "#118AB2" }}>
+              {" "}in {selectedCategories.join(", ")}
+            </span>
+          )}
+        </p>
 
         {/* Cards */}
         {filtered.length > 0 ? (
@@ -132,15 +174,11 @@ export function LibraryView() {
           )
         ) : (
           <div className="flex flex-col items-center justify-center py-24 gap-4">
-            <Search size={40} style={{ color: "#D1DCE8" }} />
             <p className="text-base font-medium" style={{ color: "#9BBCD6" }}>
-              No use cases match your search.
+              No use cases in this category.
             </p>
             <button
-              onClick={() => {
-                setSearchQuery("");
-                setSelectedCategories([]);
-              }}
+              onClick={() => setSelectedCategories([])}
               className="text-sm font-medium transition-opacity hover:opacity-70"
               style={{ color: "#376FE5" }}
             >

@@ -14,9 +14,9 @@ export function AppHeader({ userEmail, onSignOut }: AppHeaderProps) {
       {/* Wordmark */}
       <div className="flex items-center gap-4">
         <img
-          src="https://proax.ca/images/proax-logo.png"
+          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/ProaxLogo_white-kO8MOv3mVch1BdT7xvZ2peSTNzZmqd.png"
           alt="Proax Technologies"
-          className="h-8 w-auto object-contain"
+          className="h-7 w-auto object-contain"
         />
         <span
           className="text-sm font-medium tracking-tight"
