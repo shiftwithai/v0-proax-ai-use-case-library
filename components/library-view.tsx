@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useRef, useEffect } from "react";
 import { LayoutGrid, List, ChevronLeft, ChevronRight } from "lucide-react";
-import { getAllUseCases, getAllCategories, type UseCase, type Category } from "@/lib/use-cases-store";
+import { type UseCase, type Category } from "@/lib/use-cases";
 import { FilterSidebar } from "@/components/filter-sidebar";
 import { UseCaseCard } from "@/components/use-case-card";
 import { UseCasePanel } from "@/components/use-case-panel";
@@ -14,10 +14,25 @@ export function LibraryView() {
   const pillsRef = useRef<HTMLDivElement>(null);
   const [allCases, setAllCases] = useState<UseCase[]>([]);
   const [allCategories, setAllCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setAllCases(getAllUseCases());
-    setAllCategories(getAllCategories());
+    fetch("/api/use-cases")
+      .then((r) => r.json())
+      .then((rows: any[]) => {
+        const normalized: UseCase[] = rows.map((row) => ({
+          id: row.id,
+          title: row.title,
+          description: row.description,
+          category: row.category as Category,
+          prompts: Array.isArray(row.prompts) ? row.prompts : JSON.parse(row.prompts ?? "[]"),
+          ...(row.feature_note ? { featureNote: row.feature_note } : {}),
+        }));
+        setAllCases(normalized);
+        const cats = Array.from(new Set(normalized.map((u) => u.category))) as Category[];
+        setAllCategories(cats);
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   const filtered = useMemo(() => {
@@ -43,6 +58,7 @@ export function LibraryView() {
       <FilterSidebar
         selectedCategories={selectedCategories}
         onCategoryChange={setSelectedCategories}
+        categories={allCategories}
       />
 
       {/* Main content */}

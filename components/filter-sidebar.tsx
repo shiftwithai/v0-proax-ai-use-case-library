@@ -2,23 +2,25 @@
 
 import { useState, useEffect } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
-import { getAllCategories, type Category } from "@/lib/use-cases-store";
+import { type Category } from "@/lib/use-cases";
 
 interface FilterSidebarProps {
   selectedCategories: Category[];
   onCategoryChange: (categories: Category[]) => void;
+  categories?: Category[];
 }
 
 export function FilterSidebar({
   selectedCategories,
   onCategoryChange,
+  categories: categoriesProp,
 }: FilterSidebarProps) {
   const [categoryOpen, setCategoryOpen] = useState(true);
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<Category[]>(categoriesProp ?? []);
 
   useEffect(() => {
-    setCategories(getAllCategories());
-  }, []);
+    if (categoriesProp) setCategories(categoriesProp);
+  }, [categoriesProp]);
 
   const toggleCategory = (cat: Category) => {
     if (selectedCategories.includes(cat)) {
