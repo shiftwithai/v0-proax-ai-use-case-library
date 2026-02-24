@@ -85,13 +85,16 @@ export const USE_CASES: UseCase[] = [
     id: "competitive-positioning",
     title: "Competitive Positioning & Objection Handling",
     description:
-      "Prepare talking points to defend Proax's value and position our lines against competitors in the field.",
+      "Prepare talking points to defend Proax's value, position our lines against competitors, and handle tough objections in the field — before or after difficult meetings.",
     category: "Outside Sales",
     prompts: [
       "Generate talking points to position Wenglor vision solutions against Keyence.",
       "How do we position Proax as a value-added distributor versus buying direct from an OEM?",
       "Customer says Brand X is cheaper. Generate positioning language to defend our offering without discounting.",
       "List differentiators between our safety portfolio and Rockwell-integrated solutions.",
+      "Customer says they don't have budget this year. Generate 3 strategic responses.",
+      "Customer says they prefer to standardize on Brand X. Suggest positioning to introduce our line.",
+      "Generate questions to uncover hidden pain points when customer says 'everything is working fine.'",
     ],
   },
   {
@@ -117,18 +120,7 @@ export const USE_CASES: UseCase[] = [
       "Write a follow-up email after a plant tour highlighting key improvement opportunities.",
     ],
   },
-  {
-    id: "objection-handling",
-    title: "Objection Handling",
-    description:
-      "Live support before or after difficult meetings. Generate strategic responses to the most common customer objections so you walk in — or recover — with confidence.",
-    category: "Outside Sales",
-    prompts: [
-      "Customer says they don't have budget this year. Generate 3 strategic responses.",
-      "Customer says they prefer to standardize on Brand X. Suggest positioning to introduce our line.",
-      "Generate questions to uncover hidden pain points when customer says 'everything is working fine.'",
-    ],
-  },
+
 ];
 
 export const CATEGORIES: Category[] = ["Inside Sales", "Outside Sales"];
