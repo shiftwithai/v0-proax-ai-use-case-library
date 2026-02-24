@@ -12,15 +12,17 @@ export function AppHeader({ userEmail, onSignOut }: AppHeaderProps) {
       style={{ backgroundColor: "#012A4A" }}
     >
       {/* Wordmark */}
-      <div className="flex items-center gap-3">
-        <div
-          className="w-8 h-8 rounded-md flex items-center justify-center text-white font-bold text-sm"
-          style={{ backgroundColor: "#376FE5" }}
+      <div className="flex items-center gap-4">
+        <img
+          src="https://proax.ca/images/proax-logo.png"
+          alt="Proax Technologies"
+          className="h-8 w-auto object-contain"
+        />
+        <span
+          className="text-sm font-medium tracking-tight"
+          style={{ color: "#9BBCD6" }}
         >
-          P
-        </div>
-        <span className="text-white font-semibold text-base tracking-tight">
-          Proax AI Use Case Library
+          AI Use Case Library
         </span>
       </div>
 
