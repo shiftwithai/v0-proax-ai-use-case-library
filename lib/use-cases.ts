@@ -106,6 +106,29 @@ export const USE_CASES: UseCase[] = [
       "Create a pre-meeting summary for a food & beverage plant that recently had a safety audit. What should I lead with?",
     ],
   },
+  {
+    id: "executive-level-communication",
+    title: "Executive-Level Communication",
+    description:
+      "Communicating with plant managers, VPs, and directors requires a different tone and framing. Use AI to draft polished, concise executive-facing messages that lead with business value.",
+    category: "Outside Sales",
+    prompts: [
+      "Draft a concise executive email summarizing the benefits of implementing a machine vision inspection system.",
+      "Write a follow-up email after a plant tour highlighting key improvement opportunities.",
+    ],
+  },
+  {
+    id: "objection-handling",
+    title: "Objection Handling",
+    description:
+      "Live support before or after difficult meetings. Generate strategic responses to the most common customer objections so you walk in — or recover — with confidence.",
+    category: "Outside Sales",
+    prompts: [
+      "Customer says they don't have budget this year. Generate 3 strategic responses.",
+      "Customer says they prefer to standardize on Brand X. Suggest positioning to introduce our line.",
+      "Generate questions to uncover hidden pain points when customer says 'everything is working fine.'",
+    ],
+  },
 ];
 
 export const CATEGORIES: Category[] = ["Inside Sales", "Outside Sales"];
