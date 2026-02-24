@@ -1,5 +1,3 @@
-"use client";
-
 import { USE_CASES, CATEGORIES, type UseCase, type Category } from "./use-cases";
 
 const STORAGE_KEY = "proax_use_cases";
