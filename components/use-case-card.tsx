@@ -6,11 +6,23 @@ import type { UseCase } from "@/lib/use-cases";
 const CATEGORY_COLORS: Record<string, string> = {
   "Inside Sales": "#118AB2",
   "Outside Sales": "#376FE5",
+  "Project & Engineering": "#0D9488",
+  "Business Development": "#7C3AED",
+  "Operations": "#D97706",
+  "HR": "#DB2777",
+  "Accounting": "#059669",
 };
 
-const HEADER_PATTERNS: Record<string, { bg: string; pattern: string }> = {
-  "Inside Sales": { bg: "#22577A", pattern: "inside" },
-  "Outside Sales": { bg: "#012A4A", pattern: "outside" },
+const DEFAULT_COLOR = "#64748B";
+
+const HEADER_PATTERNS: Record<string, { bg: string }> = {
+  "Inside Sales": { bg: "#22577A" },
+  "Outside Sales": { bg: "#012A4A" },
+  "Project & Engineering": { bg: "#134E4A" },
+  "Business Development": { bg: "#3B1A6E" },
+  "Operations": { bg: "#78350F" },
+  "HR": { bg: "#831843" },
+  "Accounting": { bg: "#064E3B" },
 };
 
 interface UseCaseCardProps {
@@ -20,8 +32,8 @@ interface UseCaseCardProps {
 }
 
 function CardHeader({ useCase }: { useCase: UseCase }) {
-  const { bg } = HEADER_PATTERNS[useCase.category];
-  const color = CATEGORY_COLORS[useCase.category];
+  const { bg } = HEADER_PATTERNS[useCase.category] ?? { bg: "#1E293B" };
+  const color = CATEGORY_COLORS[useCase.category] ?? DEFAULT_COLOR;
 
   return (
     <div
@@ -63,7 +75,7 @@ function CardHeader({ useCase }: { useCase: UseCase }) {
 }
 
 export function UseCaseCard({ useCase, onClick, listView = false }: UseCaseCardProps) {
-  const catColor = CATEGORY_COLORS[useCase.category];
+  const catColor = CATEGORY_COLORS[useCase.category] ?? DEFAULT_COLOR;
 
   if (listView) {
     return (
