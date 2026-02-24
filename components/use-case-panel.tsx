@@ -59,7 +59,7 @@ function PromptBlock({ prompt, index }: PromptBlockProps) {
       </div>
       <div className="p-4" style={{ backgroundColor: "#F8FAFC" }}>
         <p
-          className="text-sm leading-relaxed font-mono whitespace-pre-wrap"
+          className="text-sm leading-relaxed font-sans whitespace-pre-wrap"
           style={{ color: "#334155" }}
         >
           {prompt}
