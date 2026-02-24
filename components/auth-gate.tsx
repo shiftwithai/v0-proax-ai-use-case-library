@@ -31,12 +31,11 @@ export function AuthGate({ onAuth }: AuthGateProps) {
         style={{ backgroundColor: "#FFFFFF" }}
       >
         {/* Logo */}
-        <div
-          className="w-16 h-16 rounded-xl flex items-center justify-center text-white font-bold text-2xl tracking-tight"
-          style={{ backgroundColor: "#012A4A" }}
-        >
-          P
-        </div>
+        <img
+          src="https://proax.ca/images/proax-logo.png"
+          alt="Proax Technologies"
+          className="h-10 w-auto object-contain"
+        />
 
         {/* Heading */}
         <div className="text-center flex flex-col gap-2">
