@@ -1,4 +1,4 @@
-export type Category = "Inside Sales" | "Outside Sales";
+export type Category = "Inside Sales" | "Outside Sales" | "Project & Engineering";
 
 export interface UseCase {
   id: string;
@@ -121,6 +121,92 @@ export const USE_CASES: UseCase[] = [
     ],
   },
 
+
+  // Project & Engineering
+  {
+    id: "automation-architecture",
+    title: "Automation Architecture Recommendation",
+    description:
+      "Generate a complete automation architecture for complex projects using Proax lines only — covering sensors, safety, IO, HMI, and connectivity in one structured output.",
+    category: "Project & Engineering",
+    prompts: [
+      "Recommend a complete automation architecture for a robotic palletizing cell including: Sensors, Safety, IO, HMI, Connectivity. Use Proax lines only.",
+      "Design an automation architecture for a conveyor-based inspection system in a food & beverage plant. Include all layers from field devices to data connectivity.",
+    ],
+  },
+  {
+    id: "compatibility-integration-risk",
+    title: "Compatibility & Integration Risk Checks",
+    description:
+      "Prevent technical mismatches before quoting or ordering. Flag communication conflicts, protocol gaps, and integration risks across multi-brand configurations.",
+    category: "Project & Engineering",
+    prompts: [
+      "Identify potential compatibility risks between: Turck IO-Link masters, Banner safety controllers, and a third-party PLC.",
+      "Review this proposed multi-brand configuration and flag possible integration or communication issues.",
+      "Identify risks of mixing Brand A safety scanner with Brand B safety relay.",
+    ],
+  },
+  {
+    id: "application-feasibility",
+    title: "Application Feasibility Assessment",
+    description:
+      "Quickly determine if a proposed solution is technically realistic before committing engineering hours or quoting a customer.",
+    category: "Project & Engineering",
+    prompts: [
+      "Evaluate feasibility of using 2D vision for detecting hairline cracks in aluminum wheels.",
+      "What technical limitations should we consider for high-speed conveyor inspection at 1 m/s?",
+      "Identify environmental risks for using standard photoelectric sensors in a washdown meat processing plant.",
+    ],
+  },
+  {
+    id: "technical-documentation",
+    title: "Technical Documentation Acceleration",
+    description:
+      "Reduce time spent writing structured engineering documents. Convert raw notes, emails, and specs into polished deliverables in minutes.",
+    category: "Project & Engineering",
+    prompts: [
+      "Convert these raw engineering notes into a structured Functional Design Specification.",
+      "Create a FAT checklist for a conveyor-based inspection system.",
+      "Draft a control narrative for a robotic loading cell.",
+      "Summarize this technical email thread into a clean internal engineering update.",
+    ],
+  },
+  {
+    id: "change-order-scope-control",
+    title: "Change Order & Scope Control",
+    description:
+      "Protect project margin by documenting scope changes clearly and professionally — before they become disputed extras.",
+    category: "Project & Engineering",
+    prompts: [
+      "Draft a change order summary explaining added safety guarding requirements.",
+      "Summarize scope creep risks in this revised customer specification.",
+      "Create a professional explanation of why additional engineering hours are required.",
+    ],
+  },
+  {
+    id: "technical-to-sales-translation",
+    title: "Technical-to-Sales Translation",
+    description:
+      "Bridge the gap between engineering detail and business language. Help Sales explain technical decisions to non-technical stakeholders with confidence.",
+    category: "Project & Engineering",
+    prompts: [
+      "Translate this technical explanation into customer-friendly language.",
+      "Explain why this higher-end sensor is justified versus a basic alternative.",
+      "Summarize this technical architecture in executive-level language.",
+    ],
+  },
+  {
+    id: "knowledge-capture",
+    title: "Knowledge Capture & Standardization",
+    description:
+      "Reduce dependency on tribal knowledge by converting project experience into reusable, structured documentation for the team.",
+    category: "Project & Engineering",
+    prompts: [
+      "Convert this project debrief into a structured lessons-learned document.",
+      "Create a reusable application guide for aluminum wheel inspection.",
+      "Summarize best practices for integrating IO-Link devices.",
+    ],
+  },
 ];
 
-export const CATEGORIES: Category[] = ["Inside Sales", "Outside Sales"];
+export const CATEGORIES: Category[] = ["Inside Sales", "Outside Sales", "Project & Engineering"];
