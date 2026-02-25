@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useMemo, useRef, useEffect } from "react";
-import { LayoutGrid, List, ChevronLeft, ChevronRight } from "lucide-react";
+import { useState, useMemo, useEffect } from "react";
+import { LayoutGrid, List } from "lucide-react";
 import { type UseCase, type Category } from "@/lib/use-cases";
 import { FilterSidebar } from "@/components/filter-sidebar";
 import { UseCaseCard } from "@/components/use-case-card";
@@ -11,7 +11,7 @@ export function LibraryView() {
   const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
   const [gridView, setGridView] = useState(true);
   const [activeCase, setActiveCase] = useState<UseCase | null>(null);
-  const pillsRef = useRef<HTMLDivElement>(null);
+
   const [allCases, setAllCases] = useState<UseCase[]>([]);
   const [allCategories, setAllCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
@@ -49,11 +49,6 @@ export function LibraryView() {
     );
   };
 
-  const scrollPills = (dir: "left" | "right") => {
-    if (!pillsRef.current) return;
-    pillsRef.current.scrollBy({ left: dir === "left" ? -160 : 160, behavior: "smooth" });
-  };
-
   return (
     <div className="flex flex-1 min-h-0" style={{ backgroundColor: "#EFF3F9" }}>
       {/* Sidebar */}
@@ -66,71 +61,8 @@ export function LibraryView() {
       {/* Main content */}
       <main className="flex-1 flex flex-col min-w-0 px-8 py-6 gap-5">
 
-        {/* Toolbar row: pill carousel + grid/list toggle */}
+        {/* Toolbar row: grid/list toggle */}
         <div className="flex items-center gap-3">
-          {/* Scroll left */}
-          <button
-            onClick={() => scrollPills("left")}
-            className="shrink-0 w-7 h-7 flex items-center justify-center rounded-full transition-colors hover:bg-slate-200"
-            style={{ color: "#22577A" }}
-            aria-label="Scroll left"
-          >
-            <ChevronLeft size={16} />
-          </button>
-
-          {/* Pills strip */}
-          <div
-            ref={pillsRef}
-            className="flex items-center gap-2 overflow-x-auto flex-1"
-            style={{ scrollbarWidth: "none" }}
-          >
-            {/* "All" pill */}
-            <button
-              onClick={() => setSelectedCategories([])}
-              className="shrink-0 px-4 py-1.5 rounded-full text-sm font-medium transition-colors whitespace-nowrap"
-              style={{
-                backgroundColor: selectedCategories.length === 0 ? "#012A4A" : "#FFFFFF",
-                color: selectedCategories.length === 0 ? "#FFFFFF" : "#22577A",
-                border: "1px solid",
-                borderColor: selectedCategories.length === 0 ? "#012A4A" : "#D1DCE8",
-              }}
-            >
-              All
-            </button>
-
-            {allCategories.map((cat) => {
-              const active = selectedCategories.includes(cat);
-              return (
-                <button
-                  key={cat}
-                  onClick={() => toggleCategory(cat)}
-                  className="shrink-0 px-4 py-1.5 rounded-full text-sm font-medium transition-colors whitespace-nowrap"
-                  style={{
-                    backgroundColor: active ? "#376FE5" : "#FFFFFF",
-                    color: active ? "#FFFFFF" : "#22577A",
-                    border: "1px solid",
-                    borderColor: active ? "#376FE5" : "#D1DCE8",
-                  }}
-                >
-                  {cat}
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Scroll right */}
-          <button
-            onClick={() => scrollPills("right")}
-            className="shrink-0 w-7 h-7 flex items-center justify-center rounded-full transition-colors hover:bg-slate-200"
-            style={{ color: "#22577A" }}
-            aria-label="Scroll right"
-          >
-            <ChevronRight size={16} />
-          </button>
-
-          {/* Divider */}
-          <div className="w-px h-5 shrink-0" style={{ backgroundColor: "#D1DCE8" }} />
-
           {/* Grid / List toggle */}
           <div
             className="flex items-center rounded-xl overflow-hidden shrink-0"
