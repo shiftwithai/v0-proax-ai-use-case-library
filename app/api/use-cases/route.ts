@@ -16,10 +16,10 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { id, title, description, category, prompts, featureNote, ss, thumbnail } = body;
+    const { id, title, description, category, prompts, featureNote, ss, thumbnail, title_fr, description_fr, category_fr, prompts_fr } = body;
     const [row] = await sql`
-      INSERT INTO use_cases (id, title, description, category, prompts, is_seed, feature_note, ss, thumbnail, updated_at)
-      VALUES (${id}, ${title}, ${description}, ${category}, ${JSON.stringify(prompts)}, false, ${featureNote || null}, ${ss ?? false}, ${thumbnail || null}, NOW())
+      INSERT INTO use_cases (id, title, description, category, prompts, is_seed, feature_note, ss, thumbnail, title_fr, description_fr, category_fr, prompts_fr, updated_at)
+      VALUES (${id}, ${title}, ${description}, ${category}, ${JSON.stringify(prompts)}, false, ${featureNote || null}, ${ss ?? false}, ${thumbnail || null}, ${title_fr || null}, ${description_fr || null}, ${category_fr || null}, ${prompts_fr?.length ? JSON.stringify(prompts_fr) : null}, NOW())
       ON CONFLICT (id) DO UPDATE
         SET title = EXCLUDED.title,
             description = EXCLUDED.description,
@@ -28,6 +28,10 @@ export async function POST(req: Request) {
             feature_note = EXCLUDED.feature_note,
             ss = EXCLUDED.ss,
             thumbnail = EXCLUDED.thumbnail,
+            title_fr = EXCLUDED.title_fr,
+            description_fr = EXCLUDED.description_fr,
+            category_fr = EXCLUDED.category_fr,
+            prompts_fr = EXCLUDED.prompts_fr,
             updated_at = NOW()
       RETURNING *
     `;

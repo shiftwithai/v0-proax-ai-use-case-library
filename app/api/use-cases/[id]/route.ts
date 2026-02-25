@@ -18,7 +18,7 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
   try {
     const { id } = await params;
     const body = await req.json();
-    const { title, description, category, prompts, featureNote, ss, thumbnail } = body;
+    const { title, description, category, prompts, featureNote, ss, thumbnail, title_fr, description_fr, category_fr, prompts_fr } = body;
     const [row] = await sql`
       UPDATE use_cases
       SET title = ${title},
@@ -28,6 +28,10 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
           feature_note = ${featureNote || null},
           ss = ${ss ?? false},
           thumbnail = ${thumbnail || null},
+          title_fr = ${title_fr || null},
+          description_fr = ${description_fr || null},
+          category_fr = ${category_fr || null},
+          prompts_fr = ${prompts_fr?.length ? JSON.stringify(prompts_fr) : null},
           updated_at = NOW()
       WHERE id = ${id}
       RETURNING *

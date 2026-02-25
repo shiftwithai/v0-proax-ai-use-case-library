@@ -16,6 +16,11 @@ export interface UseCase {
   featureNote?: string;
   ss?: boolean;
   thumbnail?: string;
+  // French translations (optional, fall back to English if absent)
+  title_fr?: string;
+  description_fr?: string;
+  category_fr?: string;
+  prompts_fr?: string[];
 }
 
 export const USE_CASES: UseCase[] = [

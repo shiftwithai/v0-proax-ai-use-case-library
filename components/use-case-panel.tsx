@@ -3,18 +3,24 @@
 import { useEffect, useRef, useState } from "react";
 import { X, Copy, Check, AlertTriangle } from "lucide-react";
 import type { UseCase } from "@/lib/use-cases";
+import { useLang, UI } from "@/lib/language-context";
 
 const CATEGORY_COLORS: Record<string, string> = {
   "Inside Sales": "#118AB2",
   "Outside Sales": "#376FE5",
+  // French equivalents
+  "Ventes internes": "#118AB2",
+  "Ventes externes": "#376FE5",
 };
 
 interface PromptBlockProps {
   prompt: string;
   index: number;
+  copyLabel: string;
+  copiedLabel: string;
 }
 
-function PromptBlock({ prompt, index }: PromptBlockProps) {
+function PromptBlock({ prompt, index, copyLabel, copiedLabel }: PromptBlockProps) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -24,10 +30,7 @@ function PromptBlock({ prompt, index }: PromptBlockProps) {
   };
 
   return (
-    <div
-      className="rounded-lg overflow-hidden"
-      style={{ border: "1px solid #E2EBF3" }}
-    >
+    <div className="rounded-lg overflow-hidden" style={{ border: "1px solid #E2EBF3" }}>
       <div
         className="flex items-center justify-between px-3 py-2"
         style={{ backgroundColor: "#F0F6FB" }}
@@ -45,23 +48,14 @@ function PromptBlock({ prompt, index }: PromptBlockProps) {
           }}
         >
           {copied ? (
-            <>
-              <Check size={12} />
-              Copied
-            </>
+            <><Check size={12} />{copiedLabel}</>
           ) : (
-            <>
-              <Copy size={12} />
-              Copy
-            </>
+            <><Copy size={12} />{copyLabel}</>
           )}
         </button>
       </div>
       <div className="p-4" style={{ backgroundColor: "#F8FAFC" }}>
-        <p
-          className="text-sm leading-relaxed font-sans whitespace-pre-wrap"
-          style={{ color: "#334155" }}
-        >
+        <p className="text-sm leading-relaxed font-sans whitespace-pre-wrap" style={{ color: "#334155" }}>
           {prompt}
         </p>
       </div>
@@ -75,30 +69,27 @@ interface UseCasePanelProps {
 }
 
 export function UseCasePanel({ useCase, onClose }: UseCasePanelProps) {
+  const { lang } = useLang();
+  const t = UI[lang];
   const panelRef = useRef<HTMLDivElement>(null);
 
-  // Close on Escape
   useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
+    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
     document.addEventListener("keydown", handler);
     return () => document.removeEventListener("keydown", handler);
   }, [onClose]);
 
-  // Prevent body scroll when open
   useEffect(() => {
-    if (useCase) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
+    document.body.style.overflow = useCase ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
   }, [useCase]);
 
   const isOpen = !!useCase;
+
+  const copyLabel = lang === "fr" ? "Copier" : "Copy";
+  const copiedLabel = lang === "fr" ? "Copié" : "Copied";
+  const descriptionLabel = lang === "fr" ? "Description" : "Description";
+  const noteLabel = lang === "fr" ? "Note" : "Note";
 
   return (
     <>
@@ -139,16 +130,13 @@ export function UseCasePanel({ useCase, onClose }: UseCasePanelProps) {
                 <span
                   className="text-xs font-semibold px-2.5 py-1 rounded-full self-start"
                   style={{
-                    backgroundColor: CATEGORY_COLORS[useCase.category] + "33",
-                    color: CATEGORY_COLORS[useCase.category],
+                    backgroundColor: (CATEGORY_COLORS[useCase.category] ?? "#376FE5") + "33",
+                    color: CATEGORY_COLORS[useCase.category] ?? "#376FE5",
                   }}
                 >
                   {useCase.category}
                 </span>
-                <h2
-                  className="text-xl font-bold leading-snug text-balance"
-                  style={{ color: "#FFFFFF" }}
-                >
+                <h2 className="text-xl font-bold leading-snug text-balance" style={{ color: "#FFFFFF" }}>
                   {useCase.title}
                 </h2>
               </div>
@@ -156,12 +144,8 @@ export function UseCasePanel({ useCase, onClose }: UseCasePanelProps) {
                 onClick={onClose}
                 className="mt-1 rounded-lg p-1.5 transition-colors shrink-0"
                 style={{ color: "#9BBCD6" }}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.backgroundColor = "#22577A")
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.backgroundColor = "transparent")
-                }
+                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#22577A")}
+                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
                 aria-label="Close panel"
               >
                 <X size={18} />
@@ -173,7 +157,7 @@ export function UseCasePanel({ useCase, onClose }: UseCasePanelProps) {
               {/* Description */}
               <div className="flex flex-col gap-2">
                 <h3 className="text-xs font-semibold uppercase tracking-widest" style={{ color: "#9BBCD6" }}>
-                  Description
+                  {descriptionLabel}
                 </h3>
                 <p className="text-sm leading-relaxed" style={{ color: "#334155" }}>
                   {useCase.description}
@@ -186,9 +170,9 @@ export function UseCasePanel({ useCase, onClose }: UseCasePanelProps) {
                   className="flex items-start gap-3 rounded-lg px-4 py-3"
                   style={{ backgroundColor: "#FEF9C3", border: "1px solid #FDE047" }}
                 >
-                  <AlertTriangle size={16} style={{ color: "#854D0E", marginTop: 1, shrink: 0 }} />
+                  <AlertTriangle size={16} style={{ color: "#854D0E", marginTop: 1 }} />
                   <p className="text-sm leading-relaxed" style={{ color: "#854D0E" }}>
-                    <span className="font-semibold">Note: </span>
+                    <span className="font-semibold">{noteLabel}: </span>
                     {useCase.featureNote}
                   </p>
                 </div>
@@ -197,11 +181,17 @@ export function UseCasePanel({ useCase, onClose }: UseCasePanelProps) {
               {/* Prompts */}
               <div className="flex flex-col gap-3">
                 <h3 className="text-xs font-semibold uppercase tracking-widest" style={{ color: "#9BBCD6" }}>
-                  Example Prompts
+                  {t.promptExamples}
                 </h3>
                 <div className="flex flex-col gap-3">
                   {useCase.prompts.map((prompt, i) => (
-                    <PromptBlock key={i} prompt={prompt} index={i} />
+                    <PromptBlock
+                      key={i}
+                      prompt={prompt}
+                      index={i}
+                      copyLabel={copyLabel}
+                      copiedLabel={copiedLabel}
+                    />
                   ))}
                 </div>
               </div>
@@ -210,11 +200,11 @@ export function UseCasePanel({ useCase, onClose }: UseCasePanelProps) {
               {useCase.ss && (
                 <div className="flex flex-col gap-2">
                   <h3 className="text-xs font-semibold uppercase tracking-widest" style={{ color: "#9BBCD6" }}>
-                    Enable Web Search
+                    {t.enableWebSearch}
                   </h3>
                   <img
                     src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/search%20feature-yBDFXEGUukgcPgyWF5LoIqE6blHYFv.png"
-                    alt="Enable the Web Search toggle in ChatGPT before using these prompts"
+                    alt={lang === "fr" ? "Activez la recherche Web dans ChatGPT avant d'utiliser ces invites" : "Enable the Web Search toggle in ChatGPT before using these prompts"}
                     className="w-full rounded-xl object-cover"
                     style={{ border: "1px solid #E2EBF3" }}
                   />
@@ -227,21 +217,15 @@ export function UseCasePanel({ useCase, onClose }: UseCasePanelProps) {
                 style={{ backgroundColor: "#F0F6FB", border: "1px solid #D1E8F5" }}
               >
                 <h3 className="text-xs font-semibold uppercase tracking-widest" style={{ color: "#22577A" }}>
-                  Tips
+                  {t.tips}
                 </h3>
                 <ul className="text-sm leading-relaxed flex flex-col gap-1.5" style={{ color: "#334155" }}>
-                  <li className="flex items-start gap-2">
-                    <span style={{ color: "#118AB2" }}>•</span>
-                    Replace bracketed placeholders with your actual customer data.
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span style={{ color: "#118AB2" }}>•</span>
-                    Add context about the customer's industry or size for more tailored results.
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span style={{ color: "#118AB2" }}>•</span>
-                    Iterate on the output by asking follow-up questions in the same conversation.
-                  </li>
+                  {t.tipsList.map((tip, i) => (
+                    <li key={i} className="flex items-start gap-2">
+                      <span style={{ color: "#118AB2" }}>•</span>
+                      {tip}
+                    </li>
+                  ))}
                 </ul>
               </div>
             </div>

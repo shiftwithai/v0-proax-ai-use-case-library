@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { type Category } from "@/lib/use-cases";
+import { useLang, UI } from "@/lib/language-context";
 
 interface FilterSidebarProps {
   selectedCategories: Category[];
@@ -15,6 +16,8 @@ export function FilterSidebar({
   onCategoryChange,
   categories: categoriesProp,
 }: FilterSidebarProps) {
+  const { lang } = useLang();
+  const t = UI[lang];
   const [categoryOpen, setCategoryOpen] = useState(true);
   const [categories, setCategories] = useState<Category[]>(categoriesProp ?? []);
 
@@ -36,7 +39,7 @@ export function FilterSidebar({
       style={{ backgroundColor: "#FFFFFF", borderRight: "1px solid #E2EBF3" }}
     >
       <p className="text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: "#9BBCD6" }}>
-        Filter
+        {t.filter}
       </p>
 
       {/* Category section */}
@@ -46,7 +49,7 @@ export function FilterSidebar({
           className="flex items-center justify-between w-full py-2 px-1 rounded-md text-sm font-semibold transition-colors hover:bg-slate-50"
           style={{ color: "#012A4A" }}
         >
-          Category
+          {t.categories}
           {categoryOpen ? (
             <ChevronUp size={14} style={{ color: "#9BBCD6" }} />
           ) : (
@@ -72,12 +75,7 @@ export function FilterSidebar({
                     }}
                   >
                     {checked && (
-                      <svg
-                        width="10"
-                        height="8"
-                        viewBox="0 0 10 8"
-                        fill="none"
-                      >
+                      <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
                         <path
                           d="M1 4L3.5 6.5L9 1"
                           stroke="white"
@@ -112,7 +110,7 @@ export function FilterSidebar({
           className="text-xs font-medium text-left px-1 transition-opacity hover:opacity-70"
           style={{ color: "#118AB2" }}
         >
-          Clear filters
+          {t.clearFilters}
         </button>
       )}
     </aside>

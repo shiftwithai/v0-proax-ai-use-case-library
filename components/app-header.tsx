@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { X } from "lucide-react";
+import { useLang, UI } from "@/lib/language-context";
 
 interface AppHeaderProps {
   userEmail: string;
@@ -10,6 +11,8 @@ interface AppHeaderProps {
 
 export function AppHeader({ userEmail, onSignOut }: AppHeaderProps) {
   const [feedbackOpen, setFeedbackOpen] = useState(false);
+  const { lang, setLang } = useLang();
+  const t = UI[lang];
 
   return (
     <>
@@ -28,18 +31,45 @@ export function AppHeader({ userEmail, onSignOut }: AppHeaderProps) {
             className="text-sm font-medium tracking-tight"
             style={{ color: "#9BBCD6" }}
           >
-            AI Use Case Library
+            {t.libraryTitle}
           </span>
         </div>
 
         {/* Right side */}
         <div className="flex items-center gap-4">
+          {/* Language toggle */}
+          <div
+            className="flex items-center rounded-full overflow-hidden text-xs font-semibold"
+            style={{ border: "1px solid #22577A" }}
+          >
+            <button
+              onClick={() => setLang("en")}
+              className="px-3 py-1.5 transition-colors"
+              style={{
+                backgroundColor: lang === "en" ? "#376FE5" : "transparent",
+                color: lang === "en" ? "#FFFFFF" : "#9BBCD6",
+              }}
+            >
+              EN
+            </button>
+            <button
+              onClick={() => setLang("fr")}
+              className="px-3 py-1.5 transition-colors"
+              style={{
+                backgroundColor: lang === "fr" ? "#376FE5" : "transparent",
+                color: lang === "fr" ? "#FFFFFF" : "#9BBCD6",
+              }}
+            >
+              FR
+            </button>
+          </div>
+
           <button
             onClick={() => setFeedbackOpen(true)}
             className="text-xs font-semibold px-3 py-1.5 rounded-full transition-opacity hover:opacity-80"
             style={{ backgroundColor: "#376FE5", color: "#FFFFFF" }}
           >
-            Give Feedback
+            {t.giveFeedback}
           </button>
           <span
             className="text-xs font-medium px-3 py-1.5 rounded-full"
@@ -52,7 +82,7 @@ export function AppHeader({ userEmail, onSignOut }: AppHeaderProps) {
             className="text-xs font-medium transition-opacity hover:opacity-70"
             style={{ color: "#9BBCD6" }}
           >
-            Sign out
+            {t.signOut}
           </button>
         </div>
       </header>
@@ -68,15 +98,14 @@ export function AppHeader({ userEmail, onSignOut }: AppHeaderProps) {
             className="relative w-full max-w-2xl rounded-2xl overflow-hidden shadow-2xl flex flex-col"
             style={{ backgroundColor: "#FFFFFF" }}
           >
-            {/* Modal header */}
             <div
               className="flex items-center justify-between px-6 py-4"
               style={{ backgroundColor: "#012A4A" }}
             >
               <div>
-                <h2 className="text-base font-semibold text-white">Share Your Feedback</h2>
+                <h2 className="text-base font-semibold text-white">{t.feedbackTitle}</h2>
                 <p className="text-xs mt-0.5" style={{ color: "#9BBCD6" }}>
-                  Help us improve the AI Use Case Library
+                  {t.feedbackSubtitle}
                 </p>
               </div>
               <button
@@ -87,8 +116,6 @@ export function AppHeader({ userEmail, onSignOut }: AppHeaderProps) {
                 <X size={18} />
               </button>
             </div>
-
-            {/* Embedded form */}
             <iframe
               src="https://forms.office.com/r/Zpd04RCuWL?embed=true"
               width="100%"

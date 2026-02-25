@@ -18,6 +18,11 @@ interface UseCase {
   featureNote?: string;
   ss?: boolean;
   is_seed?: boolean;
+  // French translations
+  title_fr?: string;
+  description_fr?: string;
+  category_fr?: string;
+  prompts_fr?: string[];
 }
 
 function generateId(title: string): string {
@@ -103,7 +108,10 @@ function LoginScreen({ onLogin }: { onLogin: () => void }) {
 }
 
 function emptyForm(): Partial<UseCase> {
-  return { title: "", description: "", category: "Inside Sales", prompts: [""], featureNote: "", ss: false };
+  return {
+    title: "", description: "", category: "Inside Sales", prompts: [""], featureNote: "", ss: false,
+    title_fr: "", description_fr: "", category_fr: "", prompts_fr: [""],
+  };
 }
 
 // ── Admin Dashboard ────────────────────────────────────────────────────────────
@@ -134,6 +142,14 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
         featureNote: row.feature_note ?? "",
         ss: row.ss ?? false,
         is_seed: row.is_seed,
+        title_fr: row.title_fr ?? "",
+        description_fr: row.description_fr ?? "",
+        category_fr: row.category_fr ?? "",
+        prompts_fr: Array.isArray(row.prompts_fr)
+          ? row.prompts_fr
+          : row.prompts_fr
+          ? JSON.parse(row.prompts_fr)
+          : [""],
       }));
       setUseCases(normalized);
     } catch (err) {
@@ -177,6 +193,10 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
         prompts: (form.prompts ?? []).filter((p) => p.trim() !== ""),
         featureNote: form.featureNote ?? "",
         ss: form.ss ?? false,
+        title_fr: form.title_fr ?? "",
+        description_fr: form.description_fr ?? "",
+        category_fr: form.category_fr ?? "",
+        prompts_fr: (form.prompts_fr ?? []).filter((p) => p.trim() !== ""),
       };
 
       const res = await fetch(isNew ? "/api/use-cases" : `/api/use-cases/${id}`, {
@@ -472,6 +492,107 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
                     style={{ transform: form.ss ? "translateX(22px)" : "translateX(2px)" }}
                   />
                 </button>
+              </div>
+
+              {/* French Translations Section */}
+              <div
+                className="flex flex-col gap-4 rounded-xl p-5"
+                style={{ backgroundColor: "#F0F6FB", border: "1px solid #D1E8F5" }}
+              >
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: "#22577A" }}>
+                    Traductions francaises (Quebec French)
+                  </span>
+                  <span className="text-xs px-2 py-0.5 rounded-full font-medium" style={{ backgroundColor: "#DBEAFE", color: "#1D4ED8" }}>
+                    optional
+                  </span>
+                </div>
+
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-sm font-medium" style={{ color: "#374151" }}>
+                    Titre (FR)
+                  </label>
+                  <input
+                    type="text"
+                    value={form.title_fr ?? ""}
+                    onChange={(e) => setForm((f) => ({ ...f, title_fr: e.target.value }))}
+                    className="border rounded-lg px-4 py-2.5 text-sm outline-none focus:ring-2 font-sans"
+                    style={{ borderColor: "#D1D5DB", color: "#012A4A", backgroundColor: "#FFFFFF" }}
+                    placeholder="Titre en français…"
+                  />
+                </div>
+
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-sm font-medium" style={{ color: "#374151" }}>
+                    Categorie (FR)
+                  </label>
+                  <input
+                    type="text"
+                    value={form.category_fr ?? ""}
+                    onChange={(e) => setForm((f) => ({ ...f, category_fr: e.target.value }))}
+                    className="border rounded-lg px-4 py-2.5 text-sm outline-none focus:ring-2 font-sans"
+                    style={{ borderColor: "#D1D5DB", color: "#012A4A", backgroundColor: "#FFFFFF" }}
+                    placeholder="ex: Ventes internes…"
+                  />
+                </div>
+
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-sm font-medium" style={{ color: "#374151" }}>
+                    Description (FR)
+                  </label>
+                  <textarea
+                    rows={3}
+                    value={form.description_fr ?? ""}
+                    onChange={(e) => setForm((f) => ({ ...f, description_fr: e.target.value }))}
+                    className="border rounded-lg px-4 py-2.5 text-sm outline-none focus:ring-2 font-sans resize-none"
+                    style={{ borderColor: "#D1D5DB", color: "#012A4A", backgroundColor: "#FFFFFF" }}
+                    placeholder="Description en français…"
+                  />
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <label className="text-sm font-medium" style={{ color: "#374151" }}>
+                    Exemples d'invite (FR)
+                  </label>
+                  {(form.prompts_fr ?? [""]).map((p, i) => (
+                    <div key={i} className="flex gap-2 items-start">
+                      <textarea
+                        rows={2}
+                        value={p}
+                        onChange={(e) => {
+                          const updated = [...(form.prompts_fr ?? [""])];
+                          updated[i] = e.target.value;
+                          setForm((f) => ({ ...f, prompts_fr: updated }));
+                        }}
+                        className="flex-1 border rounded-lg px-4 py-2.5 text-sm outline-none focus:ring-2 font-sans resize-none"
+                        style={{ borderColor: "#D1D5DB", color: "#012A4A", backgroundColor: "#FFFFFF" }}
+                        placeholder={`Invite ${i + 1} en français…`}
+                      />
+                      {(form.prompts_fr ?? []).length > 1 && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const updated = (form.prompts_fr ?? []).filter((_, idx) => idx !== i);
+                            setForm((f) => ({ ...f, prompts_fr: updated.length ? updated : [""] }));
+                          }}
+                          className="mt-1 p-1.5 rounded-lg transition-colors hover:bg-red-50"
+                          style={{ color: "#9CA3AF" }}
+                        >
+                          <X size={14} />
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={() => setForm((f) => ({ ...f, prompts_fr: [...(f.prompts_fr ?? [""]), ""] }))}
+                    className="self-start flex items-center gap-1.5 text-sm font-medium mt-1 transition-opacity hover:opacity-70"
+                    style={{ color: "#376FE5" }}
+                  >
+                    <Plus size={14} />
+                    Ajouter une invite
+                  </button>
+                </div>
               </div>
 
               <div className="flex items-center gap-3 pt-2">
