@@ -206,6 +206,21 @@ export function UseCasePanel({ useCase, onClose }: UseCasePanelProps) {
                 </div>
               </div>
 
+              {/* Web Search hint */}
+              {useCase.ss && (
+                <div className="flex flex-col gap-2">
+                  <h3 className="text-xs font-semibold uppercase tracking-widest" style={{ color: "#9BBCD6" }}>
+                    Enable Web Search
+                  </h3>
+                  <img
+                    src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/search%20feature-yBDFXEGUukgcPgyWF5LoIqE6blHYFv.png"
+                    alt="Enable the Web Search toggle in ChatGPT before using these prompts"
+                    className="w-full rounded-xl object-cover"
+                    style={{ border: "1px solid #E2EBF3" }}
+                  />
+                </div>
+              )}
+
               {/* Tips */}
               <div
                 className="rounded-lg p-4 flex flex-col gap-2"

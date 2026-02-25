@@ -16,21 +16,20 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { id, title, description, category, prompts, featureNote } = body;
+    const { id, title, description, category, prompts, featureNote, ss } = body;
     const [row] = await sql`
-      INSERT INTO use_cases (id, title, description, category, prompts, is_seed, updated_at)
-      VALUES (${id}, ${title}, ${description}, ${category}, ${JSON.stringify(prompts)}, false, NOW())
+      INSERT INTO use_cases (id, title, description, category, prompts, is_seed, feature_note, ss, updated_at)
+      VALUES (${id}, ${title}, ${description}, ${category}, ${JSON.stringify(prompts)}, false, ${featureNote || null}, ${ss ?? false}, NOW())
       ON CONFLICT (id) DO UPDATE
         SET title = EXCLUDED.title,
             description = EXCLUDED.description,
             category = EXCLUDED.category,
             prompts = EXCLUDED.prompts,
+            feature_note = EXCLUDED.feature_note,
+            ss = EXCLUDED.ss,
             updated_at = NOW()
       RETURNING *
     `;
-    if (featureNote !== undefined) {
-      await sql`UPDATE use_cases SET feature_note = ${featureNote || null} WHERE id = ${id}`;
-    }
     return NextResponse.json(row, { status: 201 });
   } catch (err) {
     console.error("[v0] POST /api/use-cases error:", err);

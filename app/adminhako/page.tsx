@@ -16,6 +16,7 @@ interface UseCase {
   category: Category;
   prompts: string[];
   featureNote?: string;
+  ss?: boolean;
   is_seed?: boolean;
 }
 
@@ -102,7 +103,7 @@ function LoginScreen({ onLogin }: { onLogin: () => void }) {
 }
 
 function emptyForm(): Partial<UseCase> {
-  return { title: "", description: "", category: "Inside Sales", prompts: [""], featureNote: "" };
+  return { title: "", description: "", category: "Inside Sales", prompts: [""], featureNote: "", ss: false };
 }
 
 // ── Admin Dashboard ────────────────────────────────────────────────────────────
@@ -131,6 +132,7 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
         category: row.category,
         prompts: Array.isArray(row.prompts) ? row.prompts : JSON.parse(row.prompts ?? "[]"),
         featureNote: row.feature_note ?? "",
+        ss: row.ss ?? false,
         is_seed: row.is_seed,
       }));
       setUseCases(normalized);
@@ -174,6 +176,7 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
         category: form.category,
         prompts: (form.prompts ?? []).filter((p) => p.trim() !== ""),
         featureNote: form.featureNote ?? "",
+        ss: form.ss ?? false,
       };
 
       const res = await fetch(isNew ? "/api/use-cases" : `/api/use-cases/${id}`, {
@@ -449,6 +452,26 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
                   style={{ borderColor: "#D1D5DB", color: "#012A4A" }}
                   placeholder="e.g. Requires the Activation Search feature to be enabled."
                 />
+              </div>
+
+              <div className="flex flex-col gap-1.5">
+                <label className="text-sm font-medium" style={{ color: "#374151" }}>
+                  Web Search Required
+                  <span className="font-normal ml-1" style={{ color: "#9CA3AF" }}>(shows the web search hint image in the panel)</span>
+                </label>
+                <button
+                  type="button"
+                  role="switch"
+                  aria-checked={form.ss ?? false}
+                  onClick={() => setForm((f) => ({ ...f, ss: !f.ss }))}
+                  className="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none self-start"
+                  style={{ backgroundColor: form.ss ? "#22C55E" : "#D1D5DB" }}
+                >
+                  <span
+                    className="inline-block h-4 w-4 rounded-full bg-white shadow transition-transform"
+                    style={{ transform: form.ss ? "translateX(22px)" : "translateX(2px)" }}
+                  />
+                </button>
               </div>
 
               <div className="flex items-center gap-3 pt-2">

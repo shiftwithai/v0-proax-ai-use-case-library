@@ -14,6 +14,7 @@ export interface UseCase {
   category: Category;
   prompts: string[];
   featureNote?: string;
+  ss?: boolean;
 }
 
 export const USE_CASES: UseCase[] = [

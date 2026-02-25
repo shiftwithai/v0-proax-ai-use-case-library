@@ -27,6 +27,7 @@ export function LibraryView() {
           category: row.category as Category,
           prompts: Array.isArray(row.prompts) ? row.prompts : JSON.parse(row.prompts ?? "[]"),
           ...(row.feature_note ? { featureNote: row.feature_note } : {}),
+          ss: row.ss ?? false,
         }));
         setAllCases(normalized);
         const cats = Array.from(new Set(normalized.map((u) => u.category))) as Category[];
