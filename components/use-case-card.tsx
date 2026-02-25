@@ -35,6 +35,18 @@ function CardHeader({ useCase }: { useCase: UseCase }) {
   const { bg } = HEADER_PATTERNS[useCase.category] ?? { bg: "#1E293B" };
   const color = CATEGORY_COLORS[useCase.category] ?? DEFAULT_COLOR;
 
+  if (useCase.thumbnail) {
+    return (
+      <div className="h-36 w-full rounded-t-xl relative overflow-hidden">
+        <img
+          src={useCase.thumbnail}
+          alt={useCase.title}
+          className="w-full h-full object-cover"
+        />
+      </div>
+    );
+  }
+
   return (
     <div
       className="h-36 w-full rounded-t-xl relative overflow-hidden flex items-center justify-center"

@@ -16,10 +16,10 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { id, title, description, category, prompts, featureNote, ss } = body;
+    const { id, title, description, category, prompts, featureNote, ss, thumbnail } = body;
     const [row] = await sql`
-      INSERT INTO use_cases (id, title, description, category, prompts, is_seed, feature_note, ss, updated_at)
-      VALUES (${id}, ${title}, ${description}, ${category}, ${JSON.stringify(prompts)}, false, ${featureNote || null}, ${ss ?? false}, NOW())
+      INSERT INTO use_cases (id, title, description, category, prompts, is_seed, feature_note, ss, thumbnail, updated_at)
+      VALUES (${id}, ${title}, ${description}, ${category}, ${JSON.stringify(prompts)}, false, ${featureNote || null}, ${ss ?? false}, ${thumbnail || null}, NOW())
       ON CONFLICT (id) DO UPDATE
         SET title = EXCLUDED.title,
             description = EXCLUDED.description,
@@ -27,6 +27,7 @@ export async function POST(req: Request) {
             prompts = EXCLUDED.prompts,
             feature_note = EXCLUDED.feature_note,
             ss = EXCLUDED.ss,
+            thumbnail = EXCLUDED.thumbnail,
             updated_at = NOW()
       RETURNING *
     `;
