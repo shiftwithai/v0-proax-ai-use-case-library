@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
-import { LayoutGrid, List } from "lucide-react";
+import { useState, useMemo, useEffect, useRef } from "react";
+import { LayoutGrid, List, Search, X } from "lucide-react";
 import { type UseCase, type Category } from "@/lib/use-cases";
 import { useLang, UI } from "@/lib/language-context";
 import { FilterSidebar } from "@/components/filter-sidebar";
@@ -15,6 +15,8 @@ export function LibraryView() {
   const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
   const [gridView, setGridView] = useState(true);
   const [activeCase, setActiveCase] = useState<UseCase | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const searchRef = useRef<HTMLInputElement>(null);
 
   const [rawCases, setRawCases] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -57,10 +59,20 @@ export function LibraryView() {
   }, [allCases]);
 
   const filtered = useMemo(() => {
-    return allCases.filter((uc) =>
-      selectedCategories.length === 0 || selectedCategories.includes(uc.category)
-    );
-  }, [allCases, selectedCategories]);
+    const q = searchQuery.trim().toLowerCase();
+    return allCases.filter((uc) => {
+      const matchesCategory =
+        selectedCategories.length === 0 || selectedCategories.includes(uc.category);
+      if (!matchesCategory) return false;
+      if (!q) return true;
+      return (
+        uc.title.toLowerCase().includes(q) ||
+        uc.description.toLowerCase().includes(q) ||
+        uc.category.toLowerCase().includes(q) ||
+        uc.prompts.some((p) => p.toLowerCase().includes(q))
+      );
+    });
+  }, [allCases, selectedCategories, searchQuery]);
 
   const toggleCategory = (cat: Category) => {
     setSelectedCategories((prev) =>
@@ -87,6 +99,32 @@ export function LibraryView() {
 
         {/* Toolbar row */}
         <div className="flex items-center gap-3">
+          {/* Search bar */}
+          <div
+            className="flex items-center gap-2 flex-1 px-4 py-2.5 rounded-xl"
+            style={{ border: "1px solid #D1DCE8", backgroundColor: "#FFFFFF" }}
+          >
+            <Search size={15} style={{ color: "#9BBCD6", flexShrink: 0 }} />
+            <input
+              ref={searchRef}
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder={t.searchPlaceholder}
+              className="flex-1 text-sm outline-none bg-transparent font-sans"
+              style={{ color: "#012A4A" }}
+            />
+            {searchQuery && (
+              <button
+                onClick={() => { setSearchQuery(""); searchRef.current?.focus(); }}
+                className="shrink-0 transition-opacity hover:opacity-60"
+                aria-label={t.searchClear}
+              >
+                <X size={14} style={{ color: "#9BBCD6" }} />
+              </button>
+            )}
+          </div>
+
           <div
             className="flex items-center rounded-xl overflow-hidden shrink-0"
             style={{ border: "1px solid #D1DCE8", backgroundColor: "#FFFFFF" }}

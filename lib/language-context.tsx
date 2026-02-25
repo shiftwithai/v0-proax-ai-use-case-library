@@ -51,6 +51,8 @@ export const UI = {
     authButton: "Access Library",
     authError: "Please use your @proax.ca email address.",
     authEmailLabel: "Proax Email",
+    searchPlaceholder: "Search use cases, descriptions, prompts…",
+    searchClear: "Clear",
   },
   fr: {
     libraryTitle: "Bibliothèque de cas d'utilisation IA",
@@ -81,5 +83,7 @@ export const UI = {
     authButton: "Accéder à la bibliothèque",
     authError: "Veuillez utiliser votre adresse courriel @proax.ca.",
     authEmailLabel: "Courriel Proax",
+    searchPlaceholder: "Rechercher des cas d'utilisation, descriptions, invites…",
+    searchClear: "Effacer",
   },
 } as const;
