@@ -142,7 +142,28 @@ export function LibraryView() {
         </p>
 
         {/* Cards */}
-        {filtered.length > 0 ? (
+        {loading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div
+                key={i}
+                className="rounded-xl overflow-hidden animate-pulse"
+                style={{ backgroundColor: "#FFFFFF", border: "1px solid #E2EBF3" }}
+              >
+                {/* Fake header */}
+                <div className="h-36 w-full" style={{ backgroundColor: "#E2EBF3" }} />
+                {/* Fake body */}
+                <div className="p-5 flex flex-col gap-3">
+                  <div className="h-4 rounded-full w-1/3" style={{ backgroundColor: "#E2EBF3" }} />
+                  <div className="h-5 rounded-full w-3/4" style={{ backgroundColor: "#D1DCE8" }} />
+                  <div className="h-4 rounded-full w-full" style={{ backgroundColor: "#E2EBF3" }} />
+                  <div className="h-4 rounded-full w-5/6" style={{ backgroundColor: "#E2EBF3" }} />
+                  <div className="h-4 rounded-full w-2/3 mt-1" style={{ backgroundColor: "#EFF3F9" }} />
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : filtered.length > 0 ? (
           gridView ? (
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
               {filtered.map((uc) => (
