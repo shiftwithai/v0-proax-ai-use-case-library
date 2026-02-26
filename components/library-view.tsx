@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo, useEffect, useRef } from "react";
-import { LayoutGrid, List, Search, X } from "lucide-react";
+import { LayoutGrid, List, Search, X, MessageSquarePlus } from "lucide-react";
 import { type UseCase, type Category } from "@/lib/use-cases";
 import { useLang, UI } from "@/lib/language-context";
 import { FilterSidebar } from "@/components/filter-sidebar";
@@ -17,6 +17,7 @@ export function LibraryView() {
   const [activeCase, setActiveCase] = useState<UseCase | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const searchRef = useRef<HTMLInputElement>(null);
+  const [requestPromptOpen, setRequestPromptOpen] = useState(false);
 
   const [rawCases, setRawCases] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -124,6 +125,16 @@ export function LibraryView() {
               </button>
             )}
           </div>
+
+          {/* Request a Prompt button */}
+          <button
+            onClick={() => setRequestPromptOpen(true)}
+            className="shrink-0 flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-sm font-semibold transition-opacity hover:opacity-80"
+            style={{ backgroundColor: "#012A4A", color: "#FFFFFF" }}
+          >
+            <MessageSquarePlus size={15} />
+            <span className="hidden sm:inline">{t.requestPrompt}</span>
+          </button>
 
           <div
             className="flex items-center rounded-xl overflow-hidden shrink-0"
@@ -233,6 +244,53 @@ export function LibraryView() {
 
       {/* Side panel */}
       <UseCasePanel useCase={activeCase} onClose={() => setActiveCase(null)} />
+
+      {/* Request a Prompt modal */}
+      {requestPromptOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          style={{ backgroundColor: "rgba(1,42,74,0.7)" }}
+          onClick={(e) => { if (e.target === e.currentTarget) setRequestPromptOpen(false); }}
+        >
+          <div
+            className="relative w-full max-w-2xl rounded-2xl overflow-hidden shadow-2xl flex flex-col"
+            style={{ backgroundColor: "#FFFFFF" }}
+          >
+            {/* Modal header */}
+            <div
+              className="flex items-center justify-between px-6 py-4"
+              style={{ backgroundColor: "#012A4A" }}
+            >
+              <div>
+                <h2 className="text-base font-semibold text-white">{t.requestPromptTitle}</h2>
+                <p className="text-xs mt-0.5" style={{ color: "#9BBCD6" }}>
+                  {t.requestPromptSubtitle}
+                </p>
+              </div>
+              <button
+                onClick={() => setRequestPromptOpen(false)}
+                className="text-white transition-opacity hover:opacity-70 p-1 rounded-lg"
+                aria-label="Close"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {/* Embedded form */}
+            <iframe
+              src="https://forms.office.com/r/pcuPS9rS6A?embed=true"
+              width="100%"
+              height="520"
+              frameBorder={0}
+              marginWidth={0}
+              marginHeight={0}
+              allowFullScreen
+              title="Request a Prompt"
+              style={{ border: "none", display: "block" }}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -53,6 +53,9 @@ export const UI = {
     authEmailLabel: "Proax Email",
     searchPlaceholder: "Search use cases, descriptions, prompts…",
     searchClear: "Clear",
+    requestPrompt: "Request a Prompt",
+    requestPromptTitle: "Request a Prompt",
+    requestPromptSubtitle: "Don't see a use case you need? Let us know.",
   },
   fr: {
     libraryTitle: "Bibliothèque de cas d'utilisation IA",
@@ -85,5 +88,8 @@ export const UI = {
     authEmailLabel: "Courriel Proax",
     searchPlaceholder: "Rechercher des cas d'utilisation, descriptions, invites…",
     searchClear: "Effacer",
+    requestPrompt: "Demander une invite",
+    requestPromptTitle: "Demander une invite",
+    requestPromptSubtitle: "Vous ne trouvez pas le cas d'utilisation dont vous avez besoin ? Faites-le nous savoir.",
   },
 } as const;
