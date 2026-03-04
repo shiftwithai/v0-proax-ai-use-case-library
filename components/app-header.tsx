@@ -100,7 +100,9 @@ export function AppHeader({ userEmail, onSignOut }: AppHeaderProps) {
         <div
           className="fixed inset-0 z-50 flex items-center justify-center p-4"
           style={{ backgroundColor: "rgba(1,42,74,0.7)" }}
-          onClick={(e) => { if (e.target === e.currentTarget) setFeedbackOpen(false); }}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setFeedbackOpen(false);
+          }}
         >
           <div
             className="relative w-full max-w-2xl rounded-2xl overflow-hidden shadow-2xl flex flex-col"
@@ -112,13 +114,27 @@ export function AppHeader({ userEmail, onSignOut }: AppHeaderProps) {
             >
               <div>
                 <h2 className="text-base font-semibold text-white">{t.feedbackTitle}</h2>
-                <p className="text-xs mt-0.5" style={{ color: "#9BBCD6" }}>{t.feedbackSubtitle}</p>
+                <p className="text-xs mt-0.5" style={{ color: "#9BBCD6" }}>
+                  {t.feedbackSubtitle}
+                </p>
               </div>
-              <button onClick={() => setFeedbackOpen(false)} className="text-white transition-opacity hover:opacity-70 p-1 rounded-lg" aria-label="Close feedback">
+              <button
+                onClick={() => setFeedbackOpen(false)}
+                className="text-white transition-opacity hover:opacity-70 p-1 rounded-lg"
+                aria-label="Close feedback"
+              >
                 <X size={18} />
               </button>
             </div>
-            <iframe src="https://forms.office.com/r/Zpd04RCuWL?embed=true" width="100%" height="520" frameBorder="0" marginWidth={0} marginHeight={0} allowFullScreen title="Feedback Form" style={{ border: "none", display: "block" }} />
+            <iframe
+              src="https://forms.office.com/r/Zpd04RCuWL?embed=true"
+              width="100%"
+              height="520"
+              frameBorder="0"
+              allowFullScreen
+              title="Feedback Form"
+              style={{ border: "none", display: "block" }}
+            />
           </div>
         </div>
       )}
@@ -128,7 +144,9 @@ export function AppHeader({ userEmail, onSignOut }: AppHeaderProps) {
         <div
           className="fixed inset-0 z-50 flex items-center justify-center p-4"
           style={{ backgroundColor: "rgba(1,42,74,0.7)" }}
-          onClick={(e) => { if (e.target === e.currentTarget) setRequestPromptOpen(false); }}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setRequestPromptOpen(false);
+          }}
         >
           <div
             className="relative w-full max-w-2xl rounded-2xl overflow-hidden shadow-2xl flex flex-col"
@@ -140,13 +158,27 @@ export function AppHeader({ userEmail, onSignOut }: AppHeaderProps) {
             >
               <div>
                 <h2 className="text-base font-semibold text-white">{t.requestPromptTitle}</h2>
-                <p className="text-xs mt-0.5" style={{ color: "#9BBCD6" }}>{t.requestPromptSubtitle}</p>
+                <p className="text-xs mt-0.5" style={{ color: "#9BBCD6" }}>
+                  {t.requestPromptSubtitle}
+                </p>
               </div>
-              <button onClick={() => setRequestPromptOpen(false)} className="text-white transition-opacity hover:opacity-70 p-1 rounded-lg" aria-label="Close">
+              <button
+                onClick={() => setRequestPromptOpen(false)}
+                className="text-white transition-opacity hover:opacity-70 p-1 rounded-lg"
+                aria-label="Close"
+              >
                 <X size={18} />
               </button>
             </div>
-            <iframe src="https://forms.office.com/r/pcuPS9rS6A?embed=true" width="100%" height="520" frameBorder={0} marginWidth={0} marginHeight={0} allowFullScreen title="Request a Prompt" style={{ border: "none", display: "block" }} />
+            <iframe
+              src="https://forms.office.com/r/pcuPS9rS6A?embed=true"
+              width="100%"
+              height="520"
+              frameBorder="0"
+              allowFullScreen
+              title="Request a Prompt"
+              style={{ border: "none", display: "block" }}
+            />
           </div>
         </div>
       )}
