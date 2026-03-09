@@ -40,7 +40,10 @@ export function FilterSidebar({
         className="w-[220px] shrink-0 flex flex-col gap-1 py-6 px-4 min-h-full"
         style={{ backgroundColor: "#FFFFFF", borderRight: "1px solid #E2EBF3" }}
       >
-        <p className="text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: "#9BBCD6" }}>
+        <p
+          className="text-xs font-semibold uppercase tracking-widest mb-3"
+          style={{ color: "#9BBCD6" }}
+        >
           {t.filter}
         </p>
 
@@ -135,7 +138,9 @@ export function FilterSidebar({
         <div
           className="fixed inset-0 z-50 flex items-center justify-center p-4"
           style={{ backgroundColor: "rgba(1,42,74,0.75)" }}
-          onClick={(e) => { if (e.target === e.currentTarget) setVideoOpen(false); }}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setVideoOpen(false);
+          }}
         >
           <div
             className="relative w-full max-w-3xl rounded-2xl overflow-hidden shadow-2xl flex flex-col"
