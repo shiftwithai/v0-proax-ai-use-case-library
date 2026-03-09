@@ -56,6 +56,9 @@ export const UI = {
     requestPrompt: "Request a Prompt",
     requestPromptTitle: "Request a Prompt",
     requestPromptSubtitle: "Don't see a use case you need? Let us know.",
+    watchHowTo: "How to use ProaxGPT",
+    watchHowToTitle: "How to use ProaxGPT",
+    watchHowToUrl: "https://www.youtube.com/embed/-aa8Agcz9Uc",
   },
   fr: {
     libraryTitle: "Bibliothèque de cas d'utilisation IA",
@@ -91,5 +94,8 @@ export const UI = {
     requestPrompt: "Demander une invite",
     requestPromptTitle: "Demander une invite",
     requestPromptSubtitle: "Vous ne trouvez pas le cas d'utilisation dont vous avez besoin ? Faites-le nous savoir.",
+    watchHowTo: "Comment utiliser ProaxGPT",
+    watchHowToTitle: "Comment utiliser ProaxGPT",
+    watchHowToUrl: "https://www.youtube.com/embed/doEVMqnkEfw",
   },
 } as const;
