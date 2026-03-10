@@ -7,6 +7,7 @@ import { useLang, UI } from "@/lib/language-context";
 import { FilterSidebar } from "@/components/filter-sidebar";
 import { UseCaseCard } from "@/components/use-case-card";
 import { UseCasePanel } from "@/components/use-case-panel";
+import { USE_CASES_DATA } from "@/lib/use-cases-data";
 
 export function LibraryView() {
   const { lang } = useLang();
@@ -18,23 +19,11 @@ export function LibraryView() {
   const [searchQuery, setSearchQuery] = useState("");
   const searchRef = useRef<HTMLInputElement>(null);
 
-  const [rawCases, setRawCases] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetch("/api/use-cases")
-      .then((r) => r.json())
-      .then((rows: any[]) => setRawCases(rows))
-      .finally(() => setLoading(false));
-  }, []);
-
-  // Normalize rows applying French overrides when lang === "fr"
+  // Transform static data with language support
   const allCases = useMemo<UseCase[]>(() => {
-    return rawCases.map((row) => {
-      const promptsEn = Array.isArray(row.prompts) ? row.prompts : JSON.parse(row.prompts ?? "[]");
-      const promptsFr = row.prompts_fr
-        ? (Array.isArray(row.prompts_fr) ? row.prompts_fr : JSON.parse(row.prompts_fr))
-        : null;
+    return USE_CASES_DATA.map((row) => {
+      const promptsEn = row.prompts;
+      const promptsFr = row.prompts_fr;
 
       return {
         id: row.id,
@@ -42,7 +31,7 @@ export function LibraryView() {
         description: lang === "fr" && row.description_fr ? row.description_fr : row.description,
         category: (lang === "fr" && row.category_fr ? row.category_fr : row.category) as Category,
         prompts: lang === "fr" && promptsFr?.length ? promptsFr : promptsEn,
-        ...(row.feature_note ? { featureNote: row.feature_note } : {}),
+        ...(row.featureNote ? { featureNote: row.featureNote } : {}),
         ss: row.ss ?? false,
         ...(row.thumbnail ? { thumbnail: row.thumbnail } : {}),
         // Keep raw FR fields so panel can access them
@@ -52,7 +41,7 @@ export function LibraryView() {
         prompts_fr: promptsFr,
       };
     });
-  }, [rawCases, lang]);
+  }, [lang]);
 
   const allCategories = useMemo<Category[]>(() => {
     return Array.from(new Set(allCases.map((u) => u.category))) as Category[];
@@ -180,28 +169,7 @@ export function LibraryView() {
         </p>
 
         {/* Cards */}
-        {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <div
-                key={i}
-                className="rounded-xl overflow-hidden animate-pulse"
-                style={{ backgroundColor: "#FFFFFF", border: "1px solid #E2EBF3" }}
-              >
-                {/* Fake header */}
-                <div className="h-36 w-full" style={{ backgroundColor: "#E2EBF3" }} />
-                {/* Fake body */}
-                <div className="p-5 flex flex-col gap-3">
-                  <div className="h-4 rounded-full w-1/3" style={{ backgroundColor: "#E2EBF3" }} />
-                  <div className="h-5 rounded-full w-3/4" style={{ backgroundColor: "#D1DCE8" }} />
-                  <div className="h-4 rounded-full w-full" style={{ backgroundColor: "#E2EBF3" }} />
-                  <div className="h-4 rounded-full w-5/6" style={{ backgroundColor: "#E2EBF3" }} />
-                  <div className="h-4 rounded-full w-2/3 mt-1" style={{ backgroundColor: "#EFF3F9" }} />
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : filtered.length > 0 ? (
+        {filtered.length > 0 ? (
           gridView ? (
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
               {filtered.map((uc) => (
