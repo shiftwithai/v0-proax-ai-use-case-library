@@ -4,12 +4,7 @@ import { useState } from "react";
 import { X, MessageSquarePlus } from "lucide-react";
 import { useLang, UI } from "@/lib/language-context";
 
-interface AppHeaderProps {
-  userEmail: string;
-  onSignOut: () => void;
-}
-
-export function AppHeader({ userEmail, onSignOut }: AppHeaderProps) {
+export function AppHeader() {
   const [feedbackOpen, setFeedbackOpen] = useState(false);
   const [requestPromptOpen, setRequestPromptOpen] = useState(false);
   const { lang, setLang } = useLang();
@@ -82,15 +77,6 @@ export function AppHeader({ userEmail, onSignOut }: AppHeaderProps) {
             style={{ backgroundColor: "#376FE5", color: "#FFFFFF" }}
           >
             {t.giveFeedback}
-          </button>
-
-          {/* Sign out */}
-          <button
-            onClick={onSignOut}
-            className="text-xs font-medium transition-opacity hover:opacity-70"
-            style={{ color: "#9BBCD6" }}
-          >
-            {t.signOut}
           </button>
         </div>
       </header>
