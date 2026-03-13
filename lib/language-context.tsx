@@ -40,8 +40,8 @@ export const UI = {
     tips: "Tips for Best Results",
     tipsList: [
       "Be specific about your industry, product line, or customer type for better results.",
-      "Paste in real customer emails or notes and ask Claude to work with them directly.",
-      "Iterate — if the first output isn't quite right, ask Claude to adjust the tone or length.",
+      "Paste in real customer emails or notes and ask ProaxGPT to work with them directly.",
+      "Iterate — if the first output isn't quite right, ask ProaxGPT to adjust the tone or length.",
       "Use these as starting points, not final outputs. Add your personal context.",
     ],
     enableWebSearch: "Enable Web Search",
@@ -78,8 +78,8 @@ export const UI = {
     tips: "Conseils pour de meilleurs résultats",
     tipsList: [
       "Précisez votre secteur d'activité, votre gamme de produits ou le type de client pour de meilleurs résultats.",
-      "Collez de vrais courriels ou notes de clients et demandez à Claude de travailler directement avec eux.",
-      "Itérez — si le premier résultat n'est pas tout à fait correct, demandez à Claude d'ajuster le ton ou la longueur.",
+      "Collez de vrais courriels ou notes de clients et demandez à ProaxGPT de travailler directement avec eux.",
+      "Itérez — si le premier résultat n'est pas tout à fait correct, demandez à ProaxGPT d'ajuster le ton ou la longueur.",
       "Utilisez ces exemples comme point de départ, pas comme résultat final. Ajoutez votre contexte personnel.",
     ],
     enableWebSearch: "Activer la recherche Web",
