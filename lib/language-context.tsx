@@ -58,7 +58,7 @@ export const UI = {
     requestPromptSubtitle: "Don't see a use case you need? Let us know.",
     watchHowTo: "How to use ProaxGPT",
     watchHowToTitle: "How to use ProaxGPT",
-    watchHowToUrl: "https://www.youtube.com/embed/-aa8Agcz9Uc",
+    watchHowToUrl: "https://www.youtube.com/embed/Z9GsqHVUmQY",
   },
   fr: {
     libraryTitle: "Bibliothèque de cas d'utilisation IA",
@@ -96,6 +96,6 @@ export const UI = {
     requestPromptSubtitle: "Vous ne trouvez pas le cas d'utilisation dont vous avez besoin ? Faites-le nous savoir.",
     watchHowTo: "Comment utiliser ProaxGPT",
     watchHowToTitle: "Comment utiliser ProaxGPT",
-    watchHowToUrl: "https://www.youtube.com/embed/doEVMqnkEfw",
+    watchHowToUrl: "https://www.youtube.com/embed/fzwnDUsW_eo",
   },
 } as const;
